@@ -1,0 +1,28 @@
+version: "1"
+
+package:
+  id: io.github.gfaviz
+  name: gfaviz
+  version: 1.0.0.1
+  kind: app
+  description: |
+    Graphical interactive tool for the visualization of sequence graphs in GFA format.
+
+command:
+  - /opt/apps/io.github.gfaviz/files/bin/gfaviz
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/wjyrich/gfaviz.git
+    version: master
+    commit: 3a2ff7fba6542e0c5025607483bde242851d0c91
+
+build: |
+  cd /project/linglong/sources/gfaviz.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
